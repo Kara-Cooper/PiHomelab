@@ -1,0 +1,507 @@
+---
+services:
+  mariadbnc: #nextcloud 3700
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadbnc
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - TZ=America/Los_Angeles
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_TCP_PORT=3700
+      - MYSQL_UNIX_PORT=3700
+    volumes:
+      - /mariadbnc/data:/config
+    ports:
+      - 3700:3306
+    restart: unless-stopped
+ 
+  mariadbly: #lychee 3701
+    image: ghcr.io/linuxserver/mariadb:latest
+    container_name: mariadbly
+    restart: unless-stopped
+    volumes:
+      - /mariadbly/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=lychee
+      - MYSQL_DATABASE=lychee
+      - MYSQL_USER=lychee
+      - MYSQL_PASSWORD=lychee
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - MYSQL_TCP_PORT=3701
+      - MYSQL_UNIX_PORT=3701
+    ports:
+      - 3701:3306
+   
+  mariadbhd: #hedgedoc 3702
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: mariadbhd
+    restart: unless-stopped
+    volumes:
+      - /mariadbhd/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=hedgedoc
+      - MYSQL_DATABASE=hedgedoc
+      - MYSQL_USER=hedgedoc
+      - MYSQL_PASSWORD=hedgedoc
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - MYSQL_TCP_PORT=3702
+      - MYSQL_UNIX_PORT=3702
+    ports:
+      - 3702:3306
+
+  mariadbwp: #wordpress 3703
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadbwp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=wordpress
+      - TZ=America/Los_Angeles
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+      - MYSQL_TCP_PORT=3703
+      - MYSQL_UNIX_PORT=3703
+    ports:
+      - 3703:3306
+    volumes:
+      - /mariadbwp/data:/config
+    restart: unless-stopped
+
+  dbj: #5432
+    image: postgres:13
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    environment:
+        - POSTGRES_PASSWORD=joplin
+        - POSTGRES_USER=joplin
+        - POSTGRES_DB=joplin
+
+  calibre: #port 73230 & 73231
+    image: lscr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - PASSWORD=password #optional
+      - CLI_ARGS= #optional
+    volumes:
+      - /calibre/config:/config
+    ports: #default ports are 8080:8080 and 8081:8081
+      - 73230:8080
+      - 73231:8081
+    restart: unless-stopped
+ 
+  calibre-web: #port 73232
+    image: lscr.io/linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - DOCKER_MODS=linuxserver/calibre-web:calibre #optional
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    volumes:
+      - /calibreweb/config:/config
+      - /calibreweb/library:/books
+    ports: #default port is 8083:8083
+      - 73232:8083
+    restart: unless-stopped
+ 
+  couchpotato: #port 5050
+    image: lscr.io/linuxserver/couchpotato
+    container_name: couchpotato
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /couchpotato/config:/config
+      - /couchpotato/downloads:/downloads
+      - /couchpotato/movies:/movies
+    ports:
+      - 5050:5050
+    restart: unless-stopped
+ 
+  headphones: #port 4323
+    image: lscr.io/linuxserver/headphones
+    container_name: headphones
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /headphones/config:/config
+      - /headphones/downloads:/downloads
+      - /headphones/music:/music
+    ports: #default port was 8181:8181
+      - 4323:8181
+    restart: unless-stopped
+ 
+  heimdall: #port 85 & 445
+    image: lscr.io/linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /heimdall/config:/config
+    ports: #default port was 80:80 and 443:443
+      - 85:80
+      - 445:443
+    restart: unless-stopped
+ 
+  libreoffice: #3365
+    image: lscr.io/linuxserver/libreoffice
+    container_name: libreoffice
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /libreoffice/config:/config
+    ports: #default port was 3000:3000
+      - 3365:3000
+    restart: unless-stopped
+ 
+  lidarr: #8686
+    image: lscr.io/linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /lidarr/config:/config
+      - /lidarr/music:/music #optional
+      - /lidarr/downloads:/downloads #optional
+    ports: #default port is 8686
+      - 8686:8686
+    restart: unless-stopped
+ 
+  medusa: #8282
+    image: lscr.io/linuxserver/medusa
+    container_name: medusa
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /medusa/config:/config
+      - /medusa/downloads:/downloads
+      - /medusa/tv:/tv
+    ports: #default port is 8081:8081
+      - 8282:8081
+    restart: unless-stopped
+ 
+  overseerr: #5055
+    image: lscr.io/linuxserver/overseerr
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+ 
+  paperless-ng:  #7000
+    image: lscr.io/linuxserver/paperless-ng
+    container_name: paperless-ng
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - REDIS_URL= #optional
+    volumes:
+      - /paperless/config:/config
+      - /paperless/data:/data
+    ports: #default port is 8000:8000
+      - 7000:8000
+    restart: unless-stopped
+ 
+  radarr: #7878
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /radarr/data:/config
+      - /radarr/movies:/movies #optional
+      - /radarr/downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+ 
+  sickchill: #8181
+    image: lscr.io/linuxserver/sickchill
+    container_name: sickchill
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /sickchill/config:/config
+      - /sickchill/downloads:/downloads
+      - /sickchill/tv:/tv
+    ports:
+      - 8081:8081
+    restart: unless-stopped
+ 
+  sonarr: #8989
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /sonarr/config:/config
+      - /sonarr/tvseries:/tv #optional
+      - /sonarr/downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+ 
+  webtop: #3131
+    image: lscr.io/linuxserver/webtop:ubuntu-mate
+    container_name: webtop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /webtop/config:/config
+    ports:
+      - 3131:3000
+    restart: unless-stopped
+
+  snapdrop: #90 & 643
+    image: lscr.io/linuxserver/snapdrop
+    container_name: snapdrop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /snapdrop:/config
+    ports:
+      - 90:80
+      - 643:443
+    restart: unless-stopped
+
+  minecraft: #45565
+    image: itzg/minecraft-server
+    ports:
+      - 45565:25565
+    environment:
+      EULA: "TRUE"
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  plex: #32400:32400
+    image: lscr.io/linuxserver/plex
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - /plex/library:/config
+      - /plex/tvseries:/tv
+      - /plex/movies:/movies
+    ports:
+      - 32400:32400
+    restart: unless-stopped
+ 
+  rsnapshot: #port?
+    image: lscr.io/linuxserver/rsnapshot
+    container_name: rsnapshot
+    environment:
+     - PUID=1000
+     - PGID=1000
+     - TZ=America/Los_Angeles
+    volumes:
+     - /rsnapshot/config:/config
+     - /rsnapshot/snapshots:/.snapshots #optional
+     - /rsnapshot/data:/data #optional
+    restart: unless-stopped
+   
+  homeassistant: # 8123
+    image: lscr.io/linuxserver/homeassistant
+    container_name: homeassistant
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /homeassistant/data:/config
+    ports: #default port is 8123:8123
+      - 8123:8123 #optional
+    restart: unless-stopped
+ 
+  wireguard: #51820
+    image: lscr.io/linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - SERVERURL=wireguard.yourdomain.com
+      - SERVERPORT=51820
+      - PEERS=laptop,tablet,phon
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.0.0.2
+      - ALLOWEDIPS=0.0.0.0/0
+    volumes:
+      - /wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    restart: unless-stopped
+
+  swag: #443 & 80
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - URL=herkaraness.com
+      - SUBDOMAINS=wildcard
+      - VALIDATION=dns
+      - DNSPLUGIN=cloudflare
+    volumes:
+      - /swag:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+ 
+  nextcloud: #port?
+    image: ghcr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - DB_HOST=nextcloud
+      - DB_USERNAME=nextcloud
+      - DB_PASSWORD=nextcloud
+      - DB_DATABASE=nextcloud
+      - DB_PORT=3700
+    volumes:
+      - /nextcloud/config:/config
+      - /nextcloud/data:/data
+    depends_on:
+      - mariadbnc
+    restart: unless-stopped
+ 
+  lychee: #port 2121
+    image: ghcr.io/linuxserver/lychee:latest
+    container_name: lychee
+    restart: unless-stopped
+    depends_on:
+      - mariadbly
+    volumes:
+      - /lychee/config:/config
+      - /lychee/pictures:/pictures
+    environment:
+      - DB_HOST=lychee
+      - DB_USERNAME=lychee
+      - DB_PASSWORD=lychee
+      - DB_DATABASE=lychee
+      - DB_PORT=3701
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+    ports: #default port was 80:80
+      - 2121:80
+
+  hedgedoc: #port 3300
+    image: lscr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    restart: unless-stopped
+    depends_on:
+      - mariadbhd
+    volumes:
+      - /hedgedoc/config:/config
+    environment:
+      - DB_HOST=hedgedoc
+      - DB_USER=hedgedoc
+      - DB_PASS=hedgedoc
+      - DB_NAME=hedgedoc
+      - DB_PORT=3702
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - CMD_DOMAIN=localhost
+    ports: #default port was 3000:3000
+      - 3300:3300
+     
+  joplin: #22300
+      image: joplin/server:latest
+      depends_on:
+        - dbj
+      ports:
+        - 22300:22300
+      restart: unless-stopped
+      environment:
+        - APP_PORT=22300
+        - APP_BASE_URL=joplin.localhost
+        - DB_CLIENT=pg
+        - POSTGRES_PASSWORD=joplin
+        - POSTGRES_DATABASE=joplin
+        - POSTGRES_USER=joplin
+        - POSTGRES_PORT=5432 #?
+        - POSTGRES_HOST=dbj #?
+
+  bitwarden:
+    image: vaultwarden/server:latest
+    expose:
+      - 80
+      - 3012
+    volumes:
+      - ./data/bitwarden:/data
+    restart: on-failure
+    environment:
+      WEBSOCKET_ENABLED: 'true'
+
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 784:784/udp
+      - 853:853/tcp
+      - 3000:3000/tcp
+      - 80:80/tcp
+      - 443:443/tcp
+    volumes:
+      - ./workdir:/opt/adguardhome/work
+      - ./confdir:/opt/adguardhome/conf
+    restart: unless-stopped
