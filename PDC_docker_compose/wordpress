@@ -1,5 +1,3 @@
-version: "3.9"
-    
 services:
   db:
     image: mysql:5.7
@@ -13,7 +11,7 @@ services:
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
     
-  wordpress:
+  wordpress: #8100
     depends_on:
       - db
     image: wordpress:latest
