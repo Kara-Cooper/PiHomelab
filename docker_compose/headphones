@@ -1,0 +1,16 @@
+---
+services:
+  headphones: #4323
+    image: lscr.io/linuxserver/headphones
+    container_name: headphones
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /homelab/docker/headphones/config:/config
+      - /homelab/docker/headphones/downloads:/downloads
+      - /homelab/docker/headphones/music:/music
+    ports: #default port was 8181:8181
+      - 4323:8181
+    restart: unless-stopped
