@@ -1,0 +1,16 @@
+---
+services:
+  sonarr: #8989
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /homelab/docker/sonarr/config:/config
+      - /homelab/docker/sonarr/tvseries:/tv #optional
+      - /homelab/docker/sonarr/downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
