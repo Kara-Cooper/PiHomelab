@@ -1,0 +1,17 @@
+---
+services:
+  calibre: #3230 & 73231
+    image: lscr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - PASSWORD=password #optional
+      - CLI_ARGS= #optional
+    volumes:
+      - /homelab/docker/calibre/config:/config
+    ports: #default ports are 8080:8080 and 8081:8081
+      - 73230:8080
+      - 73231:8081
+    restart: unless-stopped
