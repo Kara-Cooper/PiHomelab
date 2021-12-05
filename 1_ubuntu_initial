@@ -11,4 +11,9 @@
  apt install net-tools -y &&
  apt update -y &&
  apt upgrade -y && 
- apt autoremove -y
+ apt autoremove -y &&
+ apt-get install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
