@@ -71,6 +71,9 @@ Turnkey Config
 - [Select] Advanced Menu
 - [Select] Quit
 
+## Optional debian config
+https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/1_debian_initial
+
 ## Setup Docker Services
 
 Figure out your IP address
@@ -78,6 +81,10 @@ Figure out your IP address
 ip addr
 
 go to ip:9000 to access portainer
+
+## Optional start downloading docker images
+
+https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/3_docker_pull
 
 ## Setup Portainer
 
@@ -89,6 +96,16 @@ Go to App Templates > Custom Templates
 - Enter Title
 - Enter description
 - copy compose files from Github folder
+
+## compose files
+
+4_docker_compose 
+
+https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/4_docker_compose
+
+5_docker_compose_complex 
+
+https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/5_docker_compose_complex
 
 Deploy custom templates via "Deploy the stack"
 
