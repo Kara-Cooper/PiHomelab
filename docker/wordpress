@@ -1,0 +1,20 @@
+---
+services:
+  mariadbwp: #wordpress db=3703
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadbwp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=wordpress
+      - TZ=America/Los_Angeles
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+      - MYSQL_TCP_PORT=3703
+      - MYSQL_UNIX_PORT=3703
+    ports:
+      - 3703:3306
+    volumes:
+      - /homelab/docker/mariadbwp/data:/config
+    restart: unless-stopped
