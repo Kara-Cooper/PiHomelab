@@ -1,4 +1,3 @@
-version: "3"
 services:
   mariadb:
     image: ghcr.io/linuxserver/mariadb:latest
@@ -14,7 +13,7 @@ services:
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
-  lychee:
+  lychee: #2121
     image: ghcr.io/linuxserver/lychee:latest
     container_name: lychee
     restart: always
