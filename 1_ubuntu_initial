@@ -1,15 +1,15 @@
-sudo apt install openssh-server -y && 
-sudo apt update -y &&
-sudo apt upgrade -y && 
-sudo apt autoremove -y &&
-sudo apt install sysbench -y && 
-sudo apt install exfat-fuse -y && 
-sudo apt install fuse -y && 
-sudo apt install ntfs-3g -y &&
-sudo apt-get install samba samba-common-bin -y && 
-sudo apt-get install apt-transport-https -y && 
-sudo apt-get install aptitude -y && 
-sudo apt install net-tools -y &&
-sudo apt update -y &&
-sudo apt upgrade -y && 
-sudo apt autoremove -y
+ apt install openssh-server -y && 
+ apt update -y &&
+ apt upgrade -y && 
+ apt autoremove -y &&
+ apt install sysbench -y && 
+ apt install exfat-fuse -y && 
+ apt install fuse -y && 
+ apt install ntfs-3g -y &&
+ apt-get install samba samba-common-bin -y && 
+ apt-get install apt-transport-https -y && 
+ apt-get install aptitude -y && 
+ apt install net-tools -y &&
+ apt update -y &&
+ apt upgrade -y && 
+ apt autoremove -y
