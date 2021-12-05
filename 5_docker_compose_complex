@@ -1,0 +1,174 @@
+---
+services:
+  mariadbnc: #nextcloud db=3700
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadbnc
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - TZ=America/Los_Angeles
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_TCP_PORT=3700
+      - MYSQL_UNIX_PORT=3700
+    volumes:
+      - /homelab/docker/mariadbnc/data:/config
+    ports:
+      - 3700:3306
+    restart: unless-stopped
+
+  mariadbly: #lychee db=3701
+    image: ghcr.io/linuxserver/mariadb:latest
+    container_name: mariadbly
+    restart: unless-stopped
+    volumes:
+      - /homelab/docker/mariadbly/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=lychee
+      - MYSQL_DATABASE=lychee
+      - MYSQL_USER=lychee
+      - MYSQL_PASSWORD=lychee
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - MYSQL_TCP_PORT=3701
+      - MYSQL_UNIX_PORT=3701
+    ports:
+      - 3701:3306
+
+  mariadbhd: #hedgedoc db=3702
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: mariadbhd
+    restart: unless-stopped
+    volumes:
+      - /homelab/docker/mariadbhd/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=hedgedoc
+      - MYSQL_DATABASE=hedgedoc
+      - MYSQL_USER=hedgedoc
+      - MYSQL_PASSWORD=hedgedoc
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - MYSQL_TCP_PORT=3702
+      - MYSQL_UNIX_PORT=3702
+    ports:
+      - 3702:3306
+
+  mariadbwp: #wordpress db=3703
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadbwp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=wordpress
+      - TZ=America/Los_Angeles
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+      - MYSQL_TCP_PORT=3703
+      - MYSQL_UNIX_PORT=3703
+    ports:
+      - 3703:3306
+    volumes:
+      - /homelab/docker/mariadbwp/data:/config
+    restart: unless-stopped
+
+  dbj: #joplin db=5432
+    image: postgres:13
+    container_name: dbj
+    volumes:
+      - /homelab/docker/dbj/data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    environment:
+        - POSTGRES_PASSWORD=joplin
+        - POSTGRES_USER=joplin
+        - POSTGRES_DB=joplin
+
+  nextcloud: #1180 & 11443
+    image: ghcr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - DB_HOST=nextcloud
+      - DB_USERNAME=nextcloud
+      - DB_PASSWORD=nextcloud
+      - DB_DATABASE=nextcloud
+      - DB_PORT=3700
+    volumes:
+      - /homelab/docker/nextcloud/config:/config
+      - /homelab/docker/nextcloud/data:/data
+    depends_on:
+      - mariadbnc
+    ports:
+      - 1180:80
+      - 11443:443
+    restart: unless-stopped
+
+  lychee: #2121
+    image: ghcr.io/linuxserver/lychee:latest
+    container_name: lychee
+    restart: unless-stopped
+    depends_on:
+      - mariadbly
+    volumes:
+      - /homelab/docker/lychee/config:/config
+      - /homelab/docker/lychee/pictures:/pictures
+    environment:
+      - DB_HOST=lychee
+      - DB_USERNAME=lychee
+      - DB_PASSWORD=lychee
+      - DB_DATABASE=lychee
+      - DB_PORT=3701
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+    ports: #default port was 80:80
+      - 2121:80
+
+  hedgedoc: #3300
+    image: lscr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    restart: unless-stopped
+    depends_on:
+      - mariadbhd
+    volumes:
+      - /homelab/docker/hedgedoc/config:/config
+    environment:
+      - DB_HOST=hedgedoc
+      - DB_USER=hedgedoc
+      - DB_PASS=hedgedoc
+      - DB_NAME=hedgedoc
+      - DB_PORT=3702
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - CMD_DOMAIN=localhost
+    ports: #default port was 3000:3000
+      - 3300:3300
+
+  joplin: #22300
+      image: joplin/server:latest
+      container_name: joplin
+      depends_on:
+        - dbj
+      ports:
+        - 22300:22300
+      volumes:
+        - /homelab/docker/joplin
+      restart: unless-stopped
+      environment:
+        - APP_PORT=22300
+        - APP_BASE_URL=localhost
+        - DB_CLIENT=pg
+        - POSTGRES_PASSWORD=joplin
+        - POSTGRES_DATABASE=joplin
+        - POSTGRES_USER=joplin
+        - POSTGRES_PORT=5432 #?
+        - POSTGRES_HOST=dbj #?
