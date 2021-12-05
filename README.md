@@ -72,6 +72,7 @@ Go to App Templates > Custom Templates
 - copy compose files from Github folder
 Deploy custom templates via "Deploy the stack"
 
-Edit port as need
+Edit port as needed
 - For example if the port is 80:80, edit the *first number* (host pc port):(container port). 
 
+docker run -d --restart=unless-stopped -p 80:80 -p 443:443 --privileged rancher/rancher
