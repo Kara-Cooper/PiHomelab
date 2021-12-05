@@ -110,7 +110,12 @@ https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/5_docker_compose_comp
 Deploy custom templates via "Deploy the stack"
 
 ## Edit ports as needed
-- For example if the port is 80:80, edit the *first number* (host pc port):(container port). 
+- For example if the port is 80:80, edit the *first number* which is the host pc port
+- (host pc port):(container port)
+
+## Add network volumes
+
+Open up the Proxmox webGUI and navigate to Datacenter > Storage > Add > CIFS:
 
 ## Add volumes to network
 
