@@ -1,0 +1,34 @@
+---
+services:
+  dbj: #joplin db=5432
+    image: postgres:13
+    container_name: dbj
+    volumes:
+      - /homelab/docker/dbj/data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    environment:
+        - POSTGRES_PASSWORD=joplin
+        - POSTGRES_USER=joplin
+        - POSTGRES_DB=joplin
+   
+   joplin: #22300
+      image: joplin/server:latest
+      container_name: joplin
+      depends_on:
+        - dbj
+      ports:
+        - 22300:22300
+      volumes:
+        - /homelab/docker/joplin
+      restart: unless-stopped
+      environment:
+        - APP_PORT=22300
+        - APP_BASE_URL=localhost
+        - DB_CLIENT=pg
+        - POSTGRES_PASSWORD=joplin
+        - POSTGRES_DATABASE=joplin
+        - POSTGRES_USER=joplin
+        - POSTGRES_PORT=5432 #?
+        - POSTGRES_HOST=dbj #?
