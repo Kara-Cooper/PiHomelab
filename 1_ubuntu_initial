@@ -2,7 +2,6 @@
  apt update -y &&
  apt upgrade -y && 
  apt autoremove -y &&
- apt install sysbench -y && 
  apt install exfat-fuse -y && 
  apt install fuse -y && 
  apt install ntfs-3g -y &&
