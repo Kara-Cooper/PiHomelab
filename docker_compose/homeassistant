@@ -1,0 +1,14 @@
+---
+services:
+  homeassistant: # 8123
+    image: lscr.io/linuxserver/homeassistant
+    container_name: homeassistant
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /homelab/docker/homeassistant/data:/config
+    ports: #default port is 8123:8123
+      - 8123:8123 #optional
+    restart: unless-stopped
