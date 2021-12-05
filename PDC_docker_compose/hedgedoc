@@ -7,10 +7,10 @@ services:
     volumes:
       - /homelab/docker/mariadbhd/data:/config
     environment:
-      - MYSQL_ROOT_PASSWORD=hedgedoc
+      - MYSQL_ROOT_PASSWORD=<secret password>
       - MYSQL_DATABASE=hedgedoc
       - MYSQL_USER=hedgedoc
-      - MYSQL_PASSWORD=hedgedoc
+      - MYSQL_PASSWORD=<secret password>
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
@@ -30,12 +30,12 @@ services:
     environment:
       - DB_HOST=hedgedoc
       - DB_USER=hedgedoc
-      - DB_PASS=hedgedoc
+      - DB_PASS=<secret password>
       - DB_NAME=hedgedoc
       - DB_PORT=3702
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
-      - CMD_DOMAIN=localhost
+      - CMD_DOMAIN=10.0.0.109
     ports: #default port was 3000:3000
       - 3300:3300 
