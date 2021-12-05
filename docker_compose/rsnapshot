@@ -1,0 +1,14 @@
+---
+services:
+  rsnapshot: #port?
+    image: lscr.io/linuxserver/rsnapshot
+    container_name: rsnapshot
+    environment:
+     - PUID=1000
+     - PGID=1000
+     - TZ=America/Los_Angeles
+    volumes:
+     - /homelab/docker/rsnapshot/config:/config
+     - /homelab/docker/rsnapshot/snapshots:/.snapshots #optional
+     - /homelab/docker/rsnapshot/data:/data #optional
+    restart: unless-stopped
