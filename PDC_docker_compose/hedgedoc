@@ -1,4 +1,3 @@
-version: "3"
 services:
   mariadb:
     image: lscr.io/linuxserver/mariadb:latest
@@ -14,7 +13,7 @@ services:
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
-  hedgedoc:
+  hedgedoc: #3300
     image: lscr.io/linuxserver/hedgedoc:latest
     container_name: hedgedoc
     restart: always
