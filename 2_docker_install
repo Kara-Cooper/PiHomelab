@@ -8,5 +8,4 @@ apt-get update -y &&
 apt-get install docker-ce docker-ce-cli containerd.io -y &&
 systemctl enable docker && 
 systemctl start docker &&
-docker run -d --name="portainer" --restart on-failure -p 9000:9000 -p 8000:8000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest &&
-docker run -d --restart=unless-stopped -p 80:80 -p 443:443 --privileged rancher/rancher
+docker run -d --name="portainer" --restart on-failure -p 9000:9000 -p 8000:8000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
