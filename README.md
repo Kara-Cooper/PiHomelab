@@ -1,7 +1,8 @@
 # Homelab
 Kara's Personal Homelab Instructions, Setup, Scripts, Templates, etc.
 
-## First I used a USB stick with Ventoy to add the Proxmox ISO
+#Install Proxmox
+I used a USB stick with Ventoy to add the Proxmox ISO
  - https://www.proxmox.com/en/downloads/category/iso-images-pve
  - https://www.ventoy.net/en/download.html
 
