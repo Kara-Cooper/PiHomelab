@@ -1,40 +1,36 @@
----
+version: "3"
 services:
-  mariadbly: #lychee db=3701
+  mariadb:
     image: ghcr.io/linuxserver/mariadb:latest
-    container_name: mariadbly
-    restart: unless-stopped
+    container_name: lychee_mariadb
+    restart: always
     volumes:
-      - /homelab/docker/mariadbly/data:/config
+      - /homelab/docker/lychee/mariadb/data:/config
     environment:
-      - MYSQL_ROOT_PASSWORD=lychee
+      - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=lychee
       - MYSQL_USER=lychee
-      - MYSQL_PASSWORD=lychee
+      - MYSQL_PASSWORD=dbpassword
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
-      - MYSQL_TCP_PORT=3701
-      - MYSQL_UNIX_PORT=3701
-    ports:
-      - 3701:3306
-  lychee: #2121
+  lychee:
     image: ghcr.io/linuxserver/lychee:latest
     container_name: lychee
-    restart: unless-stopped
+    restart: always
     depends_on:
-      - mariadbly
+      - mariadb
     volumes:
       - /homelab/docker/lychee/config:/config
       - /homelab/docker/lychee/pictures:/pictures
     environment:
-      - DB_HOST=lychee
+      - DB_HOST=mariadb
       - DB_USERNAME=lychee
-      - DB_PASSWORD=lychee
+      - DB_PASSWORD=dbpassword
       - DB_DATABASE=lychee
-      - DB_PORT=3701
+      - DB_PORT=3306
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
-    ports: #default port was 80:80
-      - 2121:80  
+    ports:
+      - 2121:80
