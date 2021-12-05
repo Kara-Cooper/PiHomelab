@@ -1,0 +1,15 @@
+---
+services:
+  heimdall: #85 & 445
+    image: lscr.io/linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /homelab/docker/heimdall/config:/config
+    ports: #default port was 80:80 and 443:443
+      - 85:80
+      - 445:443
+    restart: unless-stopped
