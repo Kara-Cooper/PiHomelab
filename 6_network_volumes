@@ -54,3 +54,32 @@ Guest ok = yes
 > lsblk -o LABEL,FSTYPE,SIZE,MOUNTPOINT
 > sudo mkdir -m 1777 /mnt/==xxx==/ && sudo chmod 777 /mnt/==xxx==/
 > ==sudo nano /etc/fstab==
+
+
+
+
+sudo apt update -y && sudo apt upgrade -y && sudo apt-get install samba samba-common-bin -y && sudo apt-get install apt-transport-https && sudo apt install exfat-fuse -y && sudo apt install fuse -y && sudo apt install ntfs-3g -y && sudo apt update -y && sudo apt upgrade -y && curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add - && echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list && sudo apt-get update && sudo apt install plexmediaserver -y -y && sudo apt install ocl-icd-libopencl1 -y && sudo echo 'PLEX_MEDIA_SERVER_USER=pi' | sudo tee -a /etc/default/plexmediaserver.prev > /dev/null && sudo mkdir -m 1777 /mnt/external1 -p && sudo mkdir -m 1777 /mnt/external2 -p && sudo chmod 777 /mnt/external1 && sudo chmod 777 /mnt/external2 && sudo find /mnt/external1/ -type d -exec chmod 755 {} \; && sudo find /mnt/external1/ -type f -exec chmod 644 {} \; && sudo find /mnt/external2/ -type d -exec chmod 755 {} \; && sudo find /mnt/external2/ -type f -exec chmod 644 {} \; && sudo echo 'dev/sda1 /mnt/external1/  ntfs  umask=0002,gid=100,uid=1000  0  0' | sudo tee -a /etc/fstab > /dev/null && sudo echo 'dev/sdb1 /mnt/external2/  ntfs  umask=0002,gid=100,uid=1000  0  0' | sudo tee -a /etc/fstab > /dev/null && sudo echo '
+wins support = yes
+
+[external1]
+Comment = external1
+Path = /mnt/external1/
+Browseable = yes
+Writeable = Yes
+only guest = no
+create mask = 0777
+directory mask = 0777
+Public = yes
+Guest ok = yes
+
+[external2]
+Comment = external2
+Path = /mnt/external2/
+Browseable = yes
+Writeable = Yes
+only guest = no
+create mask = 0777
+directory mask = 0777
+Public = yes
+Guest ok = yes' | sudo tee -a /etc/samba/smb.conf > /dev/null && sudo smbpasswd -a pi -n && sudo /etc/init.d/smbd restart && sudo wget https://static.adguard.com/adguardhome/release/AdGuardHome_linux_arm.tar.gz && sudo tar xvf AdGuardHome_linux_arm.tar.gz && sudo rm AdGuardHome_linux_arm.tar.gz && cd AdGuardHome && sudo ./AdGuardHome -s install
+
