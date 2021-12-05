@@ -1,0 +1,42 @@
+---
+services:
+  mariadbnc: #nextcloud db=3700
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadbnc
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - TZ=America/Los_Angeles
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_TCP_PORT=3700
+      - MYSQL_UNIX_PORT=3700
+    volumes:
+      - /homelab/docker/mariadbnc/data:/config
+    ports:
+      - 3700:3306
+    restart: unless-stopped
+    
+  nextcloud: #1180 & 11443
+    image: ghcr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - DB_HOST=nextcloud
+      - DB_USERNAME=nextcloud
+      - DB_PASSWORD=nextcloud
+      - DB_DATABASE=nextcloud
+      - DB_PORT=3700
+    volumes:
+      - /homelab/docker/nextcloud/config:/config
+      - /homelab/docker/nextcloud/data:/data
+    depends_on:
+      - mariadbnc
+    ports:
+      - 1180:80
+      - 11443:443
+    restart: unless-stopped
