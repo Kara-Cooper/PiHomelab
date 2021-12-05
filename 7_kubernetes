@@ -1,0 +1,175 @@
+# Install Rancher on Ubuntu (Multi-node)
+
+> https://rancher.com/docs/rancher/v2.5/en/installation/install-rancher-on-k8s/
+
+helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+kubectl create namespace ==cattle-system==
+
+# K3s
+
+> https://k3s.io/ \- K3s is a lightweight tool designed to run production-level Kubernetes workloads for low-resourced and remotely located IoT and Edge devices.
+
+curl -sfL https://get.k3s.io | sh -
+sudo k3s server
+k3s kubectl get node
+sudo k3s agent --server ==https://myserver:6443 --token ${NODE_TOKEN}==
+
+# K3d
+
+> https://k3d.io/v5.1.0/ \- K3d is a platform-agnostic, lightweight wrapper that runs K3s in a docker container.
+
+wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
+k3d cluster create ==mycluster==
+kubectl get nodes
+
+# Kind
+
+> [kind](https://sigs.k8s.io/kind) is a tool for running local Kubernetes clusters using Docker container “nodes”. kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.  https://kind.sigs.k8s.io/docs/user/quick-start/
+
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+chmod +x ./kind
+mv ./kind ==/some-dir-in-your-PATH/kind==
+kind create cluster
+
+# MicroK8s
+
+> https://microk8s.io/ \- Created by Canonical, [microK8S](https://microk8s.io/?ref=thechiefio) is a Kubernetes distribution designed to run fast, self-healing, and highly available Kubernetes clusters
+
+sudo snap install microk8s --classic
+microk8s status --wait-ready
+microk8s enable dashboard dns registry istio
+microk8s kubectl get all --all-namespaces
+microk8s dashboard-proxy
+microk8s start
+sudo microk8s.status
+
+# MiniKube
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+minikube start
+kubectl get po -A
+minikube dashboard
+kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
+kubectl expose deployment hello-minikube --type=NodePort --port=8080
+kubectl get services hello-minikube
+minikube service hello-minikube
+kubectl port-forward service/hello-minikube 7080:8080
+
+# K8s
+
+Developed by Google, Kubernetes is an open source platform for automating deployment, scaling, management, and orchestration of containerized applications. It offers an easy system for managing containers across multiple servers with polished load balancing and resource allocation to ensure each application runs optimally.
+
+#### 1 - General Setup
+
+sudo apt update -y
+sudo apt upgrade -y 
+sudo apt install -y apt-transport-https curl
+sudo ufw allow 6443/tcp
+sudo ufw allow 443/tcp
+
+#### 2 - Add connections
+
+sudo nano /etc/hosts
+
+#### 3 - Install Docker
+
+sudo apt update
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker kara
+newgrp docker
+sudo docker version
+systemctl status docker
+
+#### 4 - Disable Swap Memory
+
+sudo nano /etc/fstab
+comment out swap
+
+sudo nano /etc/sysctl.conf
+Uncomment
+net.ipv4.ip_forward = 1
+
+sudo swapoff -a
+
+#### 5 - Install Kubernetes
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main" -y
+sudo apt install kubeadm kubelet kubectl kubernetes-cni
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo kubeadm version
+
+#### 6 - Initialize Kubernetes master server
+
+ON MASTER
+sudo kubeadm init --pod-network-cidr ==10.244.0.0/16==
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+#### 7 - Enable bash completion
+
+==ON MASTER==
+echo 'source &lt;(kubectl completion bash)' &gt;>~/.bashrc
+source .bashrc
+
+#### 8 - Join pod
+
+==token==
+
+#### 9 - Flannel
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+#### 10 - Helm
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+#### Auto
+
+sudo apt install ssh && sudo systemctl enable --now ssh && sudo systemctl restart ssh
+
+sudo apt update -y && sudo apt upgrade -y && sudo apt install -y apt-transport-https curl && sudo ufw allow 6443/tcp && sudo ufw allow 443/tcp && sudo apt install docker.io -y && sudo systemctl start docker && sudo systemctl enable docker && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add && sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main" -y && sudo apt update -y && sudo apt upgrade -y && sudo apt install kubeadm kubelet kubectl kubernetes-cni -y && sudo apt-get update && sudo apt-get install -y kubelet kubeadm kubectl && sudo apt-mark hold kubelet kubeadm
+sudo usermod -aG docker kara
+newgrp docker
+sudo nano /etc/fstab
+comment out swap
+sudo nano /etc/sysctl.conf
+Uncomment
+net.ipv4.ip_forward = 1
+sudo swapoff -a
+sudo nano /etc/hosts
+sudo systemctl stop docker.service && sudo systemctl stop docker.socket
+sudo nano /lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --exec-opt native.cgroupdriver=systemd
+sudo systemctl daemon-reload
+systemctl restart docker.service
+sudo systemctl status docker.service
+
+# Helm
+
+https://helm.sh/docs/intro/using_helm/
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+helm search hub wordpress
+helm search repo
+helm install happy-panda bitnami/wordpress
+helm status happy-panda
+helm show values bitnami/wordpress
+helm upgrade -f panda.yaml happy-panda bitnami/wordpress
+helm uninstall happy-panda
+helm list
+helm list --all
+helm repo list
+helm repo add dev https://example.com/dev-charts
