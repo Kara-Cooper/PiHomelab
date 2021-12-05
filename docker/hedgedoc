@@ -1,0 +1,41 @@
+---
+services:
+  mariadbhd: #hedgedoc db=3702
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: mariadbhd
+    restart: unless-stopped
+    volumes:
+      - /homelab/docker/mariadbhd/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=hedgedoc
+      - MYSQL_DATABASE=hedgedoc
+      - MYSQL_USER=hedgedoc
+      - MYSQL_PASSWORD=hedgedoc
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - MYSQL_TCP_PORT=3702
+      - MYSQL_UNIX_PORT=3702
+    ports:
+      - 3702:3306
+      
+  hedgedoc: #3300
+    image: lscr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    restart: unless-stopped
+    depends_on:
+      - mariadbhd
+    volumes:
+      - /homelab/docker/hedgedoc/config:/config
+    environment:
+      - DB_HOST=hedgedoc
+      - DB_USER=hedgedoc
+      - DB_PASS=hedgedoc
+      - DB_NAME=hedgedoc
+      - DB_PORT=3702
+      - PGID=1000
+      - PUID=1000
+      - TZ=America/Los_Angeles
+      - CMD_DOMAIN=localhost
+    ports: #default port was 3000:3000
+      - 3300:3300 
