@@ -103,12 +103,12 @@ services:
       - 2121:80      
       
 services:
-  nextcloud: #22300
+  nextcloud: #42300
     container_name: nextcloud
     image: nextcloud:latest
     restart: unless-stopped
     ports:
-      - 22300:80
+      - 42300:80
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_DATABASE=nextcloud
