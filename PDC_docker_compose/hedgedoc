@@ -13,7 +13,7 @@ services:
       - PGID=1000
       - PUID=1000
       - TZ=America/Los_Angeles
-  hedgedoc: #3300
+  hedgedoc: #3000
     image: lscr.io/linuxserver/hedgedoc:latest
     container_name: hedgedoc
     restart: always
@@ -33,4 +33,4 @@ services:
       - CMD_DOMAIN=10.0.0.109 #host ip address
       - CMD_URL_ADDPORT=true #optional
     ports: #default port was 3000:30000
-      - "3300:3000" 
+      - "3000:3000" 
