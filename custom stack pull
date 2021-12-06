@@ -1,0 +1,13 @@
+git clone https://github.com/portainer/templates.git portainer-templates
+cd portainer-templates
+# Edit the file templates.json
+docker build -t portainer-templates .
+docker run -d -p "8080:80" portainer-templates
+
+https://docs.docker.com/engine/reference/commandline/stack_deploy/
+
+docker stack deploy [OPTIONS] STACK
+
+
+docker stack deploy -c nextcloud
+docker stack deploy --compose-file docker-compose.yml nextcloud
