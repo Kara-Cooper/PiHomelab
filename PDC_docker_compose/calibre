@@ -1,6 +1,6 @@
 ---
 services:
-  calibre: #73230 & 73231
+  calibre: #8080 & 8081
     image: lscr.io/linuxserver/calibre
     container_name: calibre
     environment:
@@ -12,11 +12,11 @@ services:
     volumes:
       - /homelab/docker/calibre/config:/config
     ports: #default ports are 8080:8080 and 8081:8081
-      - 73230:8080
-      - 73231:8081
+      - 8080:8080
+      - 8081:8081
     restart: unless-stopped
   
-  calibre-web: #73232
+  calibre-web: #8083
     # Default admin login: Username: admin Password: admin123
     image: lscr.io/linuxserver/calibre-web
     container_name: calibre-web
@@ -30,5 +30,5 @@ services:
       - /homelab/docker/calibreweb/config:/config
       - /homelab/docker/calibreweb/library:/books
     ports: #default port is 8083:8083
-      - 73232:8083
+      - 8083:8083
     restart: unless-stopped
