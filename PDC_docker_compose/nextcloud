@@ -4,7 +4,7 @@ services:
     image: nextcloud:latest
     restart: unless-stopped
     ports:
-      - 22300:80
+      - 42300:80
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_DATABASE=nextcloud
