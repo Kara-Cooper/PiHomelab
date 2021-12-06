@@ -17,6 +17,7 @@
  apt update -y &&
  apt upgrade -y && 
  apt autoremove -y &&
+ 
  apt-get remove docker docker-engine docker.io containerd runc -y &&
  apt-get update -y &&
  curl -fsSL https://download.docker.com/linux/debian/gpg |  gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -28,3 +29,26 @@
  systemctl enable docker && 
  systemctl start docker &&
  docker run -d --name="portainer" --restart on-failure -p 9000:9000 -p 8000:8000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+ docker pull linuxserver/calibre &&
+ docker pull linuxserver/calibre-web  &&
+ docker pull linuxserver/couchpotato &&
+ docker pull linuxserver/headphones &&
+ docker pull linuxserver/heimdall &&
+ docker pull linuxserver/homeassistant &&
+ docker pull linuxserver/libreoffice &&
+ docker pull linuxserver/lidarr &&
+ docker pull linuxserver/lychee &&
+ docker pull linuxserver/medusa &&
+ docker pull itzg/minecraft-server &&
+ docker pull linuxserver/nginx &&
+ docker pull linuxserver/overseerr &&
+ docker pull linuxserver/radarr &&
+ docker pull linuxserver/rsnapshot &&
+ docker pull linuxserver/sickchill &&
+ docker pull linuxserver/snapdrop &&
+ docker pull linuxserver/sonarr &&
+ docker pull linuxserver/webtop:ubuntu-mate &&
+ docker pull linuxserver/wireguard &&
+ docker pull jeeaaasustest/youtube-dl &&
+ docker pull kmb32123/youtube-dl-server
