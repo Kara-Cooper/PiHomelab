@@ -1,0 +1,10 @@
+[
+  {
+    "type": "stack",
+    "title": "Portainer Agent",
+    "description": "Manage all the resources in your Swarm cluster",
+    "repository": {
+      "url": "https://github.com/Kara-Cooper/Homelab",
+      "stackfile": "Homelab/PDC_docker_compose/calibre.yml"
+    }
+]
