@@ -1,6 +1,6 @@
 ---
 services:
-  calibre: #3230 & 73231
+  calibre: #73230 & 73231
     image: lscr.io/linuxserver/calibre
     container_name: calibre
     environment:
