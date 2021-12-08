@@ -26,8 +26,4 @@
       "stackfile": "stacks/portainer-agent/docker-stack.yml"
     }
   },
-
-      }
-    ]
-  }
-]
+  ]
