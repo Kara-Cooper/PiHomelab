@@ -1,0 +1,9 @@
+{
+  "type": 2,
+  "title": "Calibre",
+  "description": "Port 8080, 8081, 8083",
+  "repository": {
+    "url": "https://github.com/Kara-Cooper/Homelab",
+    "stackfile": "PDC_docker_compose/calibre.yml"
+  }
+}
