@@ -1,0 +1,16 @@
+---
+services:
+  paperless-ng:  #7000
+    image: lscr.io/linuxserver/paperless-ng
+    container_name: paperless-ng
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - REDIS_URL= #optional
+    volumes:
+      - /homelab/docker/paperless/config:/config
+      - /homelab/docker/paperless/data:/data
+    ports: #default port is 8000:8000
+      - 7000:8000
+    restart: unless-stopped
