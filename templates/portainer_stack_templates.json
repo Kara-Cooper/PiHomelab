@@ -1,29 +1,11 @@
 [
   {
-    "type": "container",
-    "title": "Registry",
-    "description": "Docker image registry",
-    "categories": ["docker"],
-    "platform": "linux",
-    "logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/registry.png",
-    "image": "registry:latest",
-    "ports": [
-      "5000/tcp"
-    ],
-    "volumes": ["/var/lib/registry"]
-  },
-
-  {
     "type": "stack",
-    "title": "Portainer Agent",
-    "description": "Manage all the resources in your Swarm cluster",
-    "note": "The agent will be deployed globally inside your cluster and available on port 9001.",
-    "categories": ["portainer"],
-    "platform": "linux",
-    "logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/portainer.png",
+    "title": "Calibre",
+    "description": "Port 8080, 8081, 8083",
     "repository": {
-      "url": "https://github.com/deviantony/templates",
-      "stackfile": "stacks/portainer-agent/docker-stack.yml"
+      "url": "https://github.com/Kara-Cooper/Homelab/",
+      "stackfile": "main/PDC_docker_compose/calibre.yml"
     }
   },
   ]
