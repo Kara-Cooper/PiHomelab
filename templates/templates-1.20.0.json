@@ -1,0 +1,10 @@
+  
+[
+  {
+    "type": 1,
+    "title": "Calibre",
+    "ports": [
+      "5000/tcp"
+    ],
+    "volumes": [{ "container": "/var/lib/registry"}]
+  },
