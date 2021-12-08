@@ -7,7 +7,7 @@
 			"description":"Calibre",
 			"repository":{
 				"url":"https://github.com/Kara-Cooper/Homelab",
-				"stackfile":"PDC_docker_compose/calibre_docker-stack.yml"
+				"stackfile":"PDC_docker_compose/calibre-docker-stack.yaml"
 			}
 		}
 	]
