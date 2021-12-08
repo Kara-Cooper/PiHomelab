@@ -1,0 +1,68 @@
+{
+	"version":"2",
+	"templates":[
+		{
+			"type":1,
+			"title":"Registry",
+			"description":"Docker image registry",
+			"categories":[
+				"docker"
+			],
+			"platform":"linux",
+			"logo":"https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/registry.png",
+			"image":"registry:latest",
+			"ports":[
+				"5000/tcp"
+			],
+			"volumes":[
+				{
+					"container":"/var/lib/registry"
+				}
+			]
+		},
+    		{
+			"type":2,
+			"title":"IronFunctions",
+			"description":"Open-source serverless computing platform",
+			"note":"Deploys the IronFunctions API and UI.",
+			"categories":[
+				"serverless"
+			],
+			"platform":"linux",
+			"logo":"https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ironfunctions.png",
+			"repository":{
+				"url":"https://github.com/portainer/templates",
+				"stackfile":"stacks/ironfunctions/docker-stack.yml"
+			}
+		},
+    		{
+			"type":3,
+			"title":"Wordpress",
+			"description":"Wordpress setup with a MySQL database",
+			"note":"Deploys a Wordpress instance connected to a MySQL database.",
+			"categories":[
+				"CMS"
+			],
+			"platform":"linux",
+			"logo":"https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/wordpress.png",
+			"repository":{
+				"url":"https://github.com/portainer/templates",
+				"stackfile":"stacks/wordpress/docker-compose.yml"
+			},
+			"env":[
+				{
+					"name":"MYSQL_DATABASE_PASSWORD",
+					"label":"Database root password",
+					"description":"Password used by the MySQL root user."
+				}
+			]
+		},
+    {
+			"type":4,
+			"title":"CockroachDB",
+			"description":"CockroachDB cluster",
+			"note":"Deploys an insecure CockroachDB cluster, please refer to <a href=\"https://www.cockroachlabs.com/docs/stable/orchestrate-cockroachdb-with-docker-swarm.html\" target=\"_blank\">CockroachDB documentation</a> for production deployments.",
+			"stackfile":"https://raw.githubusercontent.com/portainer/templates/master/stacks/cockroachdb/edge/docker-stack.yml"
+		}
+	]
+}
