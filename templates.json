@@ -2,9 +2,9 @@
 	"version":"2",
 	"templates":[
 		{
-			"type":4,
-			"title":"Calibre4",
-			"description":"Type 4",
+			"type":3,
+			"title":"Calibre",
+			"description":"Type 3",
 			"platform":"linux",
 			"stackfile":"https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/stacks/calibre/docker-stack.yaml"
 		},
