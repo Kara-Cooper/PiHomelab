@@ -36,8 +36,6 @@
 			"type":3,
 			"title":"Calibre",
 			"description":"Calibre",
-			"platform":"linux",
-			"logo":"https://en.wikipedia.org/wiki/File:Calibre_logo_3.png",
 			"repository":{
 				"url":"https://github.com/Homelab/stacks",
 				"stackfile":"stacks/calibre/docker-stack.yaml"
