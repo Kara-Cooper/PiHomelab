@@ -4,7 +4,7 @@
 		{
 			"type":"3",
 			"title":"Calibre",
-			"description":"Type 3",
+			"description":"Calibre",
 			"platform":"linux",
 			"repository":{
                           "url":"https://github.com/Kara-Cooper/Homelab",
