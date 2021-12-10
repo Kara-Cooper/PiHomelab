@@ -50,6 +50,7 @@
       "stackfile":"stacks/yt-dl/docker-stack.yaml"
     },
     }
+    }
    }
   ]
 }
