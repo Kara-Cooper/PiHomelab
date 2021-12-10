@@ -6,7 +6,9 @@
 			"title":"Calibre",
 			"description":"Type 3",
 			"platform":"linux",
-			"stackfile":"https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/stacks/calibre/docker-stack.yaml"
+			"repository":{
+                          "url":"https://github.com/Kara-Cooper/Homelab",
+                          "stackfile":"stacks/calibre/docker-stack.yaml"
 		},
 	]
 }
