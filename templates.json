@@ -8,7 +8,8 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/calibre/docker-stack.yaml"
-    },
+    }
+   }
   ]
 }
 
