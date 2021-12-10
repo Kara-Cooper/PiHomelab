@@ -2,7 +2,7 @@
 	"version":"2",
 	"templates":[
 		{
-			"type":3,
+			"type":"3",
 			"title":"Calibre",
 			"description":"Type 3",
 			"platform":"linux",
