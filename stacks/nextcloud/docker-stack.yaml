@@ -1,3 +1,5 @@
+---
+version: "2"
 services:
   nextcloud: #42300
     container_name: nextcloud
