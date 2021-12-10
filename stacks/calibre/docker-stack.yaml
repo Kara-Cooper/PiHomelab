@@ -1,3 +1,6 @@
+---
+version: "3.3"
+services:
   calibre: #8080 & 8081
     image: lscr.io/linuxserver/calibre
     container_name: calibre
