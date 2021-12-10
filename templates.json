@@ -48,7 +48,15 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/yt-dl/docker-stack.yaml"
-    }
+    },
+    {
+    "type":3,
+    "title":"Custom",
+    "description":"Custom",
+    "repository":{
+      "url":"https://github.com/Kara-Cooper/Homelab",
+      "stackfile":"stacks/custom/docker-stack.yaml"
+    },
    }
   ]
 }
