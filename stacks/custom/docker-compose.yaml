@@ -1,4 +1,5 @@
 ---
+version: "2"
 services:
   couchpotato: #5050
     image: lscr.io/linuxserver/couchpotato
