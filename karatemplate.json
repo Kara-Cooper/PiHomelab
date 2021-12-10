@@ -8,3 +8,5 @@
 			"note":"HedgeDoc",
 			"stackfile":"https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/stacks/hedgedoc/docker-stack.yaml"
 		},
+		     ]
+}
