@@ -23,13 +23,13 @@
 
 		{
 			"type":3,
-			"title":"FDO",
-			"description":"FDO",
+			"title":"Calibre",
+			"description":"Calibre",
 			"platform":"linux",
-			"logo":"https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/intel.png",
+			"logo":"https://en.wikipedia.org/wiki/File:Calibre_logo_3.png",
 			"repository":{
-				"url":"https://github.com/portainer/templates",
-				"stackfile":"stacks/fdo/docker-stack.yml"
+				"url":"https://github.com/Homelab/stacks",
+				"stackfile":"stacks/calibre-docker-stack.yaml"
 			}
 		}
 	]
