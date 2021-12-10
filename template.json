@@ -45,12 +45,6 @@
 			"note":"Deploys a Wordpress instance connected to a MySQL database.",
 			"stackfile":"https://raw.githubusercontent.com/portainer/templates/master/stacks/wordpress/edge/docker-stack.yml"
 		},
-		{
-			"type":4,
-			"title":"hedgedoc",
-			"description":"HedgeDoc",
-			"note":"HedgeDoc",
-			"stackfile":"https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/stacks/hedgedoc/docker-stack.yaml"
-		},
+
 	]
 }
