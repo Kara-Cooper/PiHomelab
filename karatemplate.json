@@ -37,8 +37,51 @@
 			"title":"Calibre",
 			"description":"Calibre",
 			"repository":{
+				"url":"https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/stacks/hedgedoc/docker-stack.yaml"
+			}
+		}
+                {
+			"type":3,
+			"title":"Calibre",
+			"description":"Calibre",
+			"platform":"linux",
+			"logo":"https://en.wikipedia.org/wiki/File:Calibre_logo_3.png",
+			"repository":{
 				"url":"https://github.com/Homelab/stacks",
-				"stackfile":"stacks/calibre/docker-stack.yaml"
+				"stackfile":"stacks/calibre-docker-stack.yaml"
+			}
+		}
+                {
+			"type":3,
+			"title":"Calibre",
+			"description":"Calibre",
+			"platform":"linux",
+			"logo":"https://en.wikipedia.org/wiki/File:Calibre_logo_3.png",
+			"repository":{
+				"url":"https://github.com/Homelab/stacks",
+				"stackfile":"stacks/calibre-docker-stack.yaml"
+			}
+		}
+                {
+			"type":3,
+			"title":"Calibre",
+			"description":"Calibre",
+			"platform":"linux",
+			"logo":"https://en.wikipedia.org/wiki/File:Calibre_logo_3.png",
+			"repository":{
+				"url":"https://github.com/Homelab/stacks",
+				"stackfile":"stacks/calibre-docker-stack.yaml"
+			}
+		}
+                {
+			"type":3,
+			"title":"Calibre",
+			"description":"Calibre",
+			"platform":"linux",
+			"logo":"https://en.wikipedia.org/wiki/File:Calibre_logo_3.png",
+			"repository":{
+				"url":"https://github.com/Homelab/stacks",
+				"stackfile":"stacks/calibre-docker-stack.yaml"
 			}
 		}
 	]
