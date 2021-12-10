@@ -51,4 +51,5 @@
  docker pull linuxserver/webtop:ubuntu-mate &&
  docker pull linuxserver/wireguard &&
  docker pull jeeaaasustest/youtube-dl &&
- docker pull kmb32123/youtube-dl-server
+ docker pull kmb32123/youtube-dl-server &&
+ docker pull modenaf360/youtube-dl-nas
