@@ -6,6 +6,7 @@
 			"type":2,
 			"title":"Calibre2",
 			"description":"Type 2",
+			"platform":"linux",
 			"repository":{
 				"url":"https://github.com/Kara-Cooper/Homelab",
 				"stackfile":"stacks/calibre/docker-stack.yaml"
@@ -14,7 +15,8 @@
 			"type":3,
 			"title":"Calibre3",
 			"description":"Type 3",
-			"repository":{
+			"platform":"linux",
+            		"repository":{
 				"url":"https://github.com/Kara-Cooper/Homelab",
 				"stackfile":"stacks/calibre/docker-stack.yaml"
 			}
@@ -23,6 +25,7 @@
 			"type":4,
 			"title":"Calibre4",
 			"description":"Type 4",
+			"platform":"linux",
 			"stackfile":"https://raw.githubusercontent.com/Kara-Cooper/Homelab/main/stacks/calibre/docker-stack.yaml"
 		},
 	]
