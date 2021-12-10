@@ -8,7 +8,7 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/calibre/docker-stack.yaml"
-    },
+    }
     {
     "type":3,
     "title":"Hedgedoc",
@@ -16,7 +16,7 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/hedgedoc/docker-stack.yaml"
-    },
+    }
     {
     "type":3,
     "title":"Lychee",
@@ -24,7 +24,7 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/lychee/docker-stack.yaml"
-    },
+    }
     {
     "type":3,
     "title":"Nextcloud",
@@ -32,7 +32,7 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/nextcloud/docker-stack.yaml"
-    },
+    }
     {
     "type":3,
     "title":"Wordpress",
@@ -40,7 +40,7 @@
     "repository":{
       "url":"https://github.com/Kara-Cooper/Homelab",
       "stackfile":"stacks/wordpress/docker-stack.yaml"
-    }, 
+    } 
     {
     "type":3,
     "title":"YouTube",
