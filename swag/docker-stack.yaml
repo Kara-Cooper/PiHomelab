@@ -16,7 +16,7 @@ services:
       - DNSPLUGIN=cloudflare 
       - EMAIL=kara.cooper@hotmail.com 
     volumes:
-      - docker/swag/appdata/config:/config
+      - home/docker/swag/:/config
     ports:
       - 443:443
       - 80:80
