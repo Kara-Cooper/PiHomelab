@@ -1,7 +1,6 @@
 #! /usr/bin/bash
  apt update -y &&
  apt upgrade -y &&
- apt autoremove -y &&
  apt install openssh-server -y && 
  apt install exfat-fuse -y && 
  apt install fuse -y && 
@@ -16,7 +15,9 @@
  apt-get install lsb-release -y &&
  apt update -y &&
  apt upgrade -y && 
- apt autoremove -y &&
+ apt autoremove -y
+ 
+ 
  
  apt-get remove docker docker-engine docker.io containerd runc -y &&
  apt-get update -y &&
@@ -29,6 +30,8 @@
  systemctl enable docker && 
  systemctl start docker &&
  docker run -d --name="portainer" --restart on-failure -p 9000:9000 -p 8000:8000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+
 
  docker pull linuxserver/calibre &&
  docker pull linuxserver/calibre-web  &&
