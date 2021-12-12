@@ -5,9 +5,21 @@ services:
     image: jeeaaasustest/youtube-dl
     container_name: youtube-dl
     volumes:
-        - /homelab/docker/youtube-dl/downloads:/downloads
-        - /homelab/docker/youtube-dl/data:/config
+        - /home/docker/youtube-dl/downloads:/downloads
+        - /home/docker/youtube-dl/data:/config
     ports: #default ports are 8080:8080 and 8081:8081
         - 8080:8080
         - 8081:8081  
+    restart: unless-stopped
+  material: 
+    image:  tzahi12345/youtubedl-material:latest
+    container_name: material
+    volumes:
+      - /home/docker/material:/app/appdata
+      - /home/docker/material:/app/audio
+      - /home/docker/material:/app/video
+      - /home/docker/material:/app/subscriptions
+      - /home/docker/material:/app/users
+    ports:
+      - 8998:17442
     restart: unless-stopped
