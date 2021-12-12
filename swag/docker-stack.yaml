@@ -14,9 +14,10 @@ services:
       - SUBDOMAINS=wildcard
       - VALIDATION=http
       - DNSPLUGIN=cloudflare 
+      - DUCKDNSTOKEN=2f54819d-f4a2-4c66-bf8e-fa7a37c29723
       - EMAIL=kara.cooper@hotmail.com 
     volumes:
-      - home/docker/swag/:/config
+      - home/docker/swag:/config
     ports:
       - 443:443
       - 80:80
