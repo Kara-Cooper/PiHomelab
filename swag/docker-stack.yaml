@@ -10,12 +10,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Los_Angeles
-      - URL=herkaraness.com
+      - URL=<>
       - SUBDOMAINS=wildcard
       - VALIDATION=http
       - DNSPLUGIN=cloudflare 
       - DUCKDNSTOKEN=<>
-      - EMAIL=kara.cooper@hotmail.com 
+      - EMAIL=<>
     volumes:
       - home/docker/swag:/config
     ports:
