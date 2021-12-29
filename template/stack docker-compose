@@ -1,0 +1,237 @@
+
+ # Docker images - Complex
+ ---docker pull tzahi12345/youtubedl-material &&
+ ---docker pull linuxserver/hedgedoc &&
+ ---docker pull joplin/server &&
+ ---docker pull hkotel/mealie &&
+ ---docker pull monica &&
+ ---docker pull gabekangas/owncast &&
+ ---docker pull tysseract/pretend-youre-xyzzy-reloaded-and-dockerized
+
+
+
+
+# Owncast
+version: '3'
+services:
+  owncast:
+    container_name: owncast
+    image: gabekangas/owncast:latest
+    ports:
+      - 8080:8080
+      - 1935:1935
+    volumes:
+     - owncast:/app/
+    restart: unless-stopped
+
+volumes:
+  owncast:
+
+
+
+# Monica
+version: "3.4"
+services:
+app:
+  image: monica
+  depends_on:
+    - db
+  ports:
+    - 8080:80
+  environment:
+    - APP_KEY=
+    - DB_HOST=db
+    - DB_USERNAME=monica
+    - DB_PASSWORD=secret
+  volumes:
+    - data:/var/www/html/storage
+  restart: always
+
+db:
+  image: mysql:5.7
+  environment:
+    - MYSQL_RANDOM_ROOT_PASSWORD=true
+    - MYSQL_DATABASE=monica
+    - MYSQL_USER=monica
+    - MYSQL_PASSWORD=secret
+  volumes:
+    - mysql:/var/lib/mysql
+  restart: always
+
+volumes:
+data:
+  name: data
+mysql:
+  name: mysql
+
+
+
+
+
+# YouTube DL
+version: "2"
+services:
+    ytdl_material:
+        environment:
+            ALLOW_CONFIG_MUTATIONS: 'true'
+            ytdl_mongodb_connection_string: 'mongodb://ytdl-mongo-db:27017'
+            ytdl_use_local_db: 'false'
+            write_ytdl_config: 'true'
+        restart: always
+        volumes:
+            - ./appdata:/app/appdata
+            - ./audio:/app/audio
+            - ./video:/app/video
+            - ./subscriptions:/app/subscriptions
+            - ./users:/app/users
+        ports:
+            - "8998:17442"
+        image: tzahi12345/youtubedl-material:latest
+    ytdl-mongo-db:
+        image: mongo
+        ports:
+            - "27017:27017"
+        logging:
+            driver: "none"
+        container_name: mongo-db
+        volumes:
+            - ./db/:/data/db
+
+
+# Hedgedoc
+version: "3"
+services:
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: hedgedoc_mariadb
+    restart: always
+    volumes:
+      - /path/to/mariadb/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=<secret password>
+      - MYSQL_DATABASE=hedgedoc
+      - MYSQL_USER=hedgedoc
+      - MYSQL_PASSWORD=<secret password>
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/London
+  hedgedoc:
+    image: lscr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    restart: always
+    depends_on:
+      - mariadb
+    volumes:
+      - /path/to/config:/config
+    environment:
+      - DB_HOST=mariadb
+      - DB_USER=hedgedoc
+      - DB_PASS=<secret password>
+      - DB_NAME=hedgedoc
+      - DB_PORT=3306
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/London
+      - CMD_DOMAIN=localhost
+      - CMD_URL_ADDPORT=true #optional
+    ports:
+      - "3000:3000"
+
+# Joplin
+version: '3'
+services:
+  app:
+    environment:
+      - APP_BASE_URL=http://joplin.yourdomain.tld:22300
+      - APP_PORT=22300
+      - POSTGRES_PASSWORD=joplin
+      - POSTGRES_DATABASE=joplin
+      - POSTGRES_USER=joplin
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=db
+      - DB_CLIENT=pg
+    restart: unless-stopped
+    image: florider89/joplin-server:latest
+    ports:
+      - "22300:22300"
+  db:
+              restart: unless-stopped
+              image: postgres:13.1
+              ports:
+                  - "5432:5432"
+              volumes:
+                  - /foo/bar/joplin-data:/var/lib/postgresql/data
+              environment:
+                  - POSTGRES_PASSWORD=joplin
+                  - POSTGRES_USER=joplin
+                  - POSTGRES_DB=joplin
+
+# Lychee
+version: "3"
+services:
+                    mariadb:
+                      image: ghcr.io/linuxserver/mariadb:latest
+                      container_name: lychee_mariadb
+                      restart: always
+                      volumes:
+                        - /path/to/mariadb/data:/config
+                      environment:
+                        - MYSQL_ROOT_PASSWORD=rootpassword
+                        - MYSQL_DATABASE=lychee
+                        - MYSQL_USER=lychee
+                        - MYSQL_PASSWORD=dbpassword
+                        - PGID=1000
+                        - PUID=1000
+                        - TZ=Europe/London
+                    lychee:
+                      image: ghcr.io/linuxserver/lychee:latest
+                      container_name: lychee
+                      restart: always
+                      depends_on:
+                        - mariadb
+                      volumes:
+                        - /path/to/config:/config
+                        - /path/to/pictures:/pictures
+                      environment:
+                        - DB_HOST=mariadb
+                        - DB_USERNAME=lychee
+                        - DB_PASSWORD=dbpassword
+                        - DB_DATABASE=lychee
+                        - DB_PORT=3306
+                        - PGID=1000
+                        - PUID=1000
+                        - TZ=Europe/London
+                      ports:
+                        - 80:80
+
+# Mealie
+version: "3.1"
+services:
+                          mealie:
+                            build:
+                              context: ./
+                              target: production
+                              dockerfile: Dockerfile
+                            container_name: mealie
+                            restart: always
+                            depends_on:
+                              - "postgres"
+                            ports:
+                              - 9090:80
+                            environment:
+                              DB_ENGINE: postgres # Optional: 'sqlite', 'postgres'
+                              POSTGRES_USER: mealie
+                              POSTGRES_PASSWORD: mealie
+                              POSTGRES_SERVER: postgres
+                              POSTGRES_PORT: 5432
+                              POSTGRES_DB: mealie
+                              # WORKERS_PER_CORE: 0.5
+                              # MAX_WORKERS: 8
+                              # WEB_CONCURRENCY: 2
+                          postgres:
+                            container_name: postgres
+                            image: postgres
+                            restart: always
+                            environment:
+                              POSTGRES_PASSWORD: mealie
+                              POSTGRES_USER: mealie
