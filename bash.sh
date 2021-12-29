@@ -90,6 +90,6 @@
  docker pull linuxserver/overseerr &&
  docker pull linuxserver/lazylibrarian &&
  docker pull linuxserver/deluge &&
- docker pull linuxserver/qbittorent &&
+ docker pull linuxserver/qbittorrent &&
  docker pull linuxserver/transmission &&
  docker pull linuxserver/jackett
