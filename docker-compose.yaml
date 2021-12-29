@@ -1,230 +1,788 @@
 ---
-version: "2"
+version: "2.1"
 services:
-  couchpotato: #5050
-    image: lscr.io/linuxserver/couchpotato
-    container_name: couchpotato
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
+      - URL=yourdomain.url
+      - SUBDOMAINS=www,
+      - VALIDATION=http
+      - CERTPROVIDER= #optional
+      - DNSPLUGIN=cloudflare #optional
+      - DUCKDNSTOKEN=<token> #optional
+      - EMAIL=<e-mail> #optional
+      - ONLY_SUBDOMAINS=false #optional
+      - EXTRA_DOMAINS=<extradomains> #optional
+      - STAGING=false #optional
     volumes:
-      - /homelab/docker/couchpotato/config:/config
-      - /homelab/docker/couchpotato/downloads:/downloads
-      - /homelab/docker/couchpotato/movies:/movies
+      - </path/to/appdata/config>:/config
     ports:
-      - 5050:5050
+      - 443:443
+      - 80:80 #optional
     restart: unless-stopped
 
-  headphones: #4323
-    image: lscr.io/linuxserver/headphones
-    container_name: headphones
+  duckdns:
+    image: lscr.io/linuxserver/duckdns
+    container_name: duckdns
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
+      - PUID=1000 #optional
+      - PGID=1000 #optional
+      - TZ=Europe/London
+      - SUBDOMAINS=subdomain1,subdomain2
+      - TOKEN=token
+      - LOG_FILE=false #optional
     volumes:
-      - /homelab/docker/headphones/config:/config
-      - /homelab/docker/headphones/downloads:/downloads
-      - /homelab/docker/headphones/music:/music
-    ports: #default port was 8181:8181
-      - 4323:8181
+      - /path/to/appdata/config:/config #optional
     restart: unless-stopped
 
-  heimdall: #80 & 443
+  heimdall:
     image: lscr.io/linuxserver/heimdall
     container_name: heimdall
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/heimdall/config:/config
-    ports: #default port was 80:80 and 443:443
+      - </path/to/appdata/config>:/config
+    ports:
       - 80:80
       - 443:443
     restart: unless-stopped
 
-  homeassistant: # 8123
-    image: lscr.io/linuxserver/homeassistant
-    container_name: homeassistant
+    organizr:
+        container_name: organizr
+        hostname: organizr
+        image: organizr/organizr:latest
+        restart: unless-stopped
+        ports:
+            - 80:80
+        volumes:
+            - <path to data>:/config
+        environment:
+            - PUID=<uid>
+            - PGID=<gid>
+            - TZ=<timezone>
+
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud
+    container_name: nextcloud
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/homeassistant/data:/config
-    ports: #default port is 8123:8123
-      - 8123:8123 #optional
+      - /path/to/appdata:/config
+      - /path/to/data:/data
+    ports:
+      - 443:443
     restart: unless-stopped
 
-  libreoffice: #3365
+  libreoffice:
     image: lscr.io/linuxserver/libreoffice
     container_name: libreoffice
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/libreoffice/config:/config
-    ports: #default port was 3000:3000
-      - 3365:3000
-    restart: unless-stopped
-
-  lidarr: #8686
-    image: lscr.io/linuxserver/lidarr
-    container_name: lidarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
-    volumes:
-      - /homelab/docker/lidarr/config:/config
-      - /homelab/docker/lidarr/music:/music #optional
-      - /homelab/docker/lidarr/downloads:/downloads #optional
-    ports: #default port is 8686
-      - 8686:8686
-    restart: unless-stopped
-
-  medusa: #8282
-    image: lscr.io/linuxserver/medusa
-    container_name: medusa
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
-    volumes:
-      - /homelab/docker/medusa/config:/config
-      - /homelab/docker/medusa/downloads:/downloads
-      - /homelab/docker/medusa/tv:/tv
-    ports: #default port is 8081:8081
-      - 8282:8081
-    restart: unless-stopped
-
-  minecraft: #45565
-    image: itzg/minecraft-server
-    container_name: minecraft
+      - /path/to/config:/config
     ports:
-      - 45565:25565
-    volumes:
-      - /homelab/docker/minecraft45565:/config
-    environment:
-      EULA: "TRUE"
-    tty: true
-    stdin_open: true
+      - 3000:3000
     restart: unless-stopped
 
-  overseerr: #5055
-    image: lscr.io/linuxserver/overseerr
-    container_name: overseerr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
-    volumes:
-      - /homelab/docker/overseerr/config:/config
-    ports:
-      - 5055:5055
-    restart: unless-stopped
-
-  paperless-ng:  #7000
+  paperless-ng:
     image: lscr.io/linuxserver/paperless-ng
     container_name: paperless-ng
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=America/New_York
       - REDIS_URL= #optional
     volumes:
-      - /homelab/docker/paperless/config:/config
-      - /homelab/docker/paperless/data:/data
-    ports: #default port is 8000:8000
-      - 7000:8000
+      - </path/to/appdata/config>:/config
+      - </path/to/appdata/data>:/data
+    ports:
+      - 8000:8000
     restart: unless-stopped
 
-  plex: #32400:32400
-    image: lscr.io/linuxserver/plex
-    container_name: plex
+  papermerge:
+    image: lscr.io/linuxserver/papermerge
+    container_name: papermerge
     environment:
       - PUID=1000
       - PGID=1000
-      - VERSION=docker
+      - TZ=America/New_York
+      - REDIS_URL= #optional
     volumes:
-      - /homelab/docker/plex/library:/config
-      - /homelab/docker/plex/tvseries:/tv
-      - /homelab/docker/plex/movies:/movies
+      - </path/to/appdata/config>:/config
+      - </path/to/appdata/data>:/data
     ports:
-      - 32400:32400
+      - 8000:8000
     restart: unless-stopped
 
-  radarr: #7878
-    image: lscr.io/linuxserver/radarr
-    container_name: radarr
+  wikijs:
+    image: lscr.io/linuxserver/wikijs
+    container_name: wikijs
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/radarr/data:/config
-      - /homelab/docker/radarr/movies:/movies #optional
-      - /homelab/docker/radarr/downloads:/downloads #optional
+      - <path to config>:/config
+      - <path to data>:/data
     ports:
-      - 7878:7878
+      - 3000:3000
     restart: unless-stopped
 
-  sickchill: #8181
-    image: lscr.io/linuxserver/sickchill
-    container_name: sickchill
+  dokuwiki:
+    image: lscr.io/linuxserver/dokuwiki
+    container_name: dokuwiki
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/sickchill/config:/config
-      - /homelab/docker/sickchill/downloads:/downloads
-      - /homelab/docker/sickchill/tv:/tv
+      - /path/to/appdata/config:/config
     ports:
-      - 8081:8081
+      - 80:80
+      - 443:443 #optional
     restart: unless-stopped
 
-  snapdrop: #90 & 643
+  focalboard:
+    image:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: focalboard
+    ports:
+      - 80:8000
+    environment:
+      - VIRTUAL_HOST=focalboard.local
+      - VIRTUAL_PORT=8000
+
+  whoogle-search:
+    image: benbusby/whoogle-search
+    container_name: whoogle-search
+    restart: unless-stopped
+    pids_limit: 50
+    mem_limit: 256mb
+    memswap_limit: 256mb
+    # user debian-tor from tor package
+    user: '102'
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /config/:size=10M,uid=102,gid=102,mode=1700
+      - /var/lib/tor/:size=10M,uid=102,gid=102,mode=1700
+      - /run/tor/:size=1M,uid=102,gid=102,mode=1700
+    #environment: # Uncomment to configure environment variables
+      # Basic auth configuration, uncomment to enable
+      #- WHOOGLE_USER=<auth username>
+      #- WHOOGLE_PASS=<auth password>
+      # Proxy configuration, uncomment to enable
+      #- WHOOGLE_PROXY_USER=<proxy username>
+      #- WHOOGLE_PROXY_PASS=<proxy password>
+      #- WHOOGLE_PROXY_TYPE=<proxy type (http|https|socks4|socks5)
+      #- WHOOGLE_PROXY_LOC=<proxy host/ip>
+      # Site alternative configurations, uncomment to enable
+      # Note: If not set, the feature will still be available
+      # with default values.
+      #- WHOOGLE_ALT_TW=farside.link/nitter
+      #- WHOOGLE_ALT_YT=farside.link/invidious
+      #- WHOOGLE_ALT_IG=farside.link/bibliogram/u
+      #- WHOOGLE_ALT_RD=farside.link/libreddit
+      #- WHOOGLE_ALT_MD=farside.link/scribe
+      #- WHOOGLE_ALT_TL=lingva.ml
+    #env_file: # Alternatively, load variables from whoogle.env
+      #- whoogle.env
+    ports:
+      - 5000:5000
+
+  adguardhome-sync:
+    image: lscr.io/linuxserver/adguardhome-sync
+    container_name: adguardhome-sync
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - CONFIGFILE=/config/adguardhome-sync.yaml #optional
+    volumes:
+      - /path/to/appdata/config:/config
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant
+    container_name: homeassistant
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/data:/config
+    ports:
+      - 8123:8123 #optional
+    devices:
+      - /path/to/device:/path/to/device
+    restart: unless-stopped
+
+  code-server:
+    image: lscr.io/linuxserver/code-server
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - PASSWORD=password #optional
+      - HASHED_PASSWORD= #optional
+      - SUDO_PASSWORD=password #optional
+      - SUDO_PASSWORD_HASH= #optional
+      - PROXY_DOMAIN=code-server.my.domain #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
+    volumes:
+      - /path/to/appdata/config:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+
+  doublecommander:
+    image: lscr.io/linuxserver/doublecommander
+    container_name: doublecommander
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/config:/config
+      - /path/to/data:/data
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  firefox:
+    image: lscr.io/linuxserver/firefox
+    container_name: firefox
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/config:/config
+    ports:
+      - 3000:3000
+    shm_size: "1gb"
+    restart: unless-stopped
+
+  grav:
+    image: lscr.io/linuxserver/grav
+    container_name: grav
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /path/to/appdata/config:/config
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  rsnapshot:
+    image: lscr.io/linuxserver/rsnapshot
+    container_name: rsnapshot
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - </path/to/appdata/config>:/config
+      - </path/to/snapshots>:/.snapshots #optional
+      - </path/to/data>:/data #optional
+    restart: unless-stopped
+
+  snapdrop:
     image: lscr.io/linuxserver/snapdrop
     container_name: snapdrop
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/snapdrop:/config
+      - <path to config>:/config
     ports:
-      - 90:80
-      - 643:443
+      - 80:80
+      - 443:443
     restart: unless-stopped
 
-  sonarr: #8989
+  taisun:
+    image: linuxserver/taisun
+    container_name: taisun
+    network_mode: bridge
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  wireguard:
+    image: lscr.io/linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SERVERURL=wireguard.domain.com #optional
+      - SERVERPORT=51820 #optional
+      - PEERS=1 #optional
+      - PEERDNS=auto #optional
+      - INTERNAL_SUBNET=10.13.13.0 #optional
+      - ALLOWEDIPS=0.0.0.0/0 #optional
+    volumes:
+      - /path/to/appdata/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+
+  webtop:
+    image: lscr.io/linuxserver/webtop
+    container_name: webtop
+    privileged: true #optional
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SUBFOLDER=/ #optional
+    volumes:
+      - /path/to/data:/config
+      - /var/run/docker.sock:/var/run/docker.sock #optional
+    ports:
+      - 3000:3000
+    shm_size: "1gb" #optional
+    restart: unless-stopped
+
+  plex:
+    image: lscr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - /path/to/library:/config
+      - /path/to/tvseries:/tv
+      - /path/to/movies:/movies
+    restart: unless-stopped
+
+  calibre:
+    image: lscr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - PASSWORD= #optional
+      - CLI_ARGS= #optional
+    volumes:
+      - /path/to/data:/config
+    ports:
+      - 8080:8080
+      - 8081:8081
+    restart: unless-stopped
+
+  ubooquity:
+    image: lscr.io/linuxserver/ubooquity
+    container_name: ubooquity
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - MAXMEM=<maxmem>
+    volumes:
+      - <path to data>:/config
+      - <path to books>:/books
+      - <path to comics>:/comics
+      - <path to raw files>:/files
+    ports:
+      - 2202:2202
+      - 2203:2203
+    restart: unless-stopped
+
+  cops:
+    image: lscr.io/linuxserver/cops
+    container_name: cops
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - <path to data>:/config
+      - <path to data>:/books
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  photoshow:
+    image: lscr.io/linuxserver/photoshow
+    container_name: photoshow
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - <path to data>:/config
+      - <path to pictures>:/Pictures:ro
+      - <path to store thumbs>:/Thumbs
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  pixapop:
+    image: lscr.io/linuxserver/pixapop
+    container_name: pixapop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - APP_USERNAME=admin #optional
+      - APP_PASSWORD=admin #optional
+    volumes:
+      - /path/to/config:/config
+      - /path/to/photos:/photos
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  airsonic:
+    image: lscr.io/linuxserver/airsonic
+    container_name: airsonic
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - CONTEXT_PATH=<URL_BASE> #optional
+      - JAVA_OPTS=<options> #optional
+    volumes:
+      - </path/to/config>:/config
+      - </path/to/music>:/music
+      - </path/to/playlists>:/playlists
+      - </path/to/podcasts>:/podcasts
+      - </path/to/other media>:/media #optional
+    ports:
+      - 4040:4040
+    devices:
+      - /dev/snd:/dev/snd #optional
+    restart: unless-stopped
+
+  beets:
+    image: lscr.io/linuxserver/beets
+    container_name: beets
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - </path/to/appdata/config>:/config
+      - </path/to/music/library>:/music
+      - </path/to/ingest>:/downloads
+    ports:
+      - 8337:8337
+    restart: unless-stopped
+
+  mstream:
+    image: lscr.io/linuxserver/mstream
+    container_name: mstream
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/data:/config
+      - /path/to/music:/music
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  booksonic-air:
+    image: lscr.io/linuxserver/booksonic-air
+    container_name: booksonic-air
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - CONTEXT_PATH=url-base
+    volumes:
+      - </path/to/appdata/config>:/config
+      - </path/to/audiobooks>:/audiobooks
+      - </path/to/podcasts>:/podcasts
+      - </path/to/othermedia>:/othermedia
+    ports:
+      - 4040:4040
+    restart: unless-stopped
+
+  medusa:
+    image: lscr.io/linuxserver/medusa
+    container_name: medusa
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - <path to data>:/config
+      - <path to downloads>:/downloads
+      - <path to tv shows>:/tv
+    ports:
+      - 8081:8081
+    restart: unless-stopped
+
+  sickchill:
+    image: lscr.io/linuxserver/sickchill
+    container_name: sickchill
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/data:/config
+      - /path/to/data:/downloads
+      - /path/to/data:/tv
+    ports:
+      - 8081:8081
+    restart: unless-stopped
+
+  sonarr:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/sonarr/config:/config
-      - /homelab/docker/sonarr/tvseries:/tv #optional
-      - /homelab/docker/sonarr/downloads:/downloads #optional
+      - /path/to/data:/config
+      - /path/to/tvseries:/tv #optional
+      - /path/to/downloadclient-downloads:/downloads #optional
     ports:
       - 8989:8989
     restart: unless-stopped
 
-  webtop: #3131
-    image: lscr.io/linuxserver/webtop:ubuntu-mate
-    container_name: webtop
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Europe/London
     volumes:
-      - /homelab/docker/webtop/config:/config
+      - /path/to/bazarr/config:/config
+      - /path/to/movies:/movies #optional
+      - /path/to/tv:/tv #optional
     ports:
-      - 3131:3000
+      - 6767:6767
+    restart: unless-stopped
+
+  couchpotato:
+    image: lscr.io/linuxserver/couchpotato
+    container_name: couchpotato
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/appdata/config:/config
+      - /path/to/downloads:/downloads
+      - /path/to/movies:/movies
+    ports:
+      - 5050:5050
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/data:/config
+      - /path/to/movies:/movies #optional
+      - /path/to/downloadclient-downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  headphones:
+    image: lscr.io/linuxserver/headphones
+    container_name: headphones
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - </path/to/appdata/config>:/config
+      - </path/to/downloads>:/downloads
+      - </path/to/music>:/music
+    ports:
+      - 8181:8181
+    restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/appdata/config:/config
+      - /path/to/music:/music #optional
+      - /path/to/downloads:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /path/to/appdata/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+
+  lazylibrarian:
+    image: lscr.io/linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - DOCKER_MODS=linuxserver/calibre-web:calibre|linuxserver/mods:lazylibrarian-ffmpeg #optional
+    volumes:
+      - /path/to/data:/config
+      - /path/to/downloads/:/downloads
+      - /path/to/data/:/books #optional
+    ports:
+      - 5299:5299
+    restart: unless-stopped
+
+  deluge:
+    image: lscr.io/linuxserver/deluge
+    container_name: deluge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - /path/to/deluge/config:/config
+      - /path/to/your/downloads:/downloads
+    ports:
+      - 8112:8112
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+    volumes:
+      - /path/to/appdata/config:/config
+      - /path/to/downloads:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080
+    restart: unless-stopped
+
+  transmission:
+    image: lscr.io/linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - USER=username #optional
+      - PASS=password #optional
+      - WHITELIST=iplist #optional
+      - HOST_WHITELIST=dnsnane list #optional
+    volumes:
+      - <path to data>:/config
+      - <path to downloads>:/downloads
+      - <path to watch folder>:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - AUTO_UPDATE=true #optional
+      - RUN_OPTS=<run options here> #optional
+    volumes:
+      - <path to data>:/config
+      - <path to blackhole>:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+  grocy:
+    image: lscr.io/linuxserver/grocy
+    container_name: grocy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/data:/config
+    ports:
+      - 9283:80
+    restart: unless-stopped
+
+  clarkson:
+    image: lscr.io/linuxserver/clarkson
+    container_name: clarkson
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_HOST=<mysql_host>
+      - MYSQL_USERNAME=<mysql_username>
+      - MYSQL_PASSWORD=<mysql_password>
+      - ENABLE_REGISTRATIONS=<true/false>
+      - TZ=Europe/London
+    ports:
+      - 3000:3000
     restart: unless-stopped
