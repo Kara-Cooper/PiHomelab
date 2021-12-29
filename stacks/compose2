@@ -1,0 +1,481 @@
+docker pull linuxserver/wikijs &&
+
+docker pull joplin/server &&
+
+docker pull kanboard/kanboard &&
+
+docker pull nicoulaj/focalboard &&
+
+docker pull benbusby/whoogle-search &&
+
+docker pull linuxserver/lychee &&
+
+docker pull linuxserver/booksonic-air
+
+&&
+
+# Docker images - Media Downloaders
+
+docker pull linuxserver/medusa &&
+
+docker pull linuxserver/sickchill &&
+
+docker pull linuxserver/sonarr &&
+
+docker pull linuxserver/couchpotato &&
+
+docker pull linuxserver/radarr &&
+
+docker pull linuxserver/headphones &&
+
+docker pull linuxserver/lidarr &&
+
+docker pull linuxserver/overseerr &&
+
+docker pull jeeaaasustest/youtube-dl &&
+
+docker pull kmb32123/youtube-dl-server &&
+
+docker pull modenaf360/youtube-dl-nas &&
+
+docker pull linuxserver/lazylibrarian
+
+&&
+
+# Docker images - Other
+
+docker pull linuxserver/grocy &&
+
+docker pull hkotel/mealie &&
+
+docker pull monica &&
+
+docker pull gabekangas/owncast &&
+
+docker pull tysseract/pretend-youre-xyzzy-reloaded-and-dockerized
+
+* * *
+
+Stack
+
+calibre
+
+hedgedoc
+
+lychee
+
+nextcloud
+
+wp
+
+yt
+
+swag 
+
+duckdns 
+
+heimdall 
+
+organizr
+
+ heimdall: #80 & 443
+
+ image: lscr.io/linuxserver/heimdall
+
+ container_name: heimdall
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/heimdall/config:/config
+
+ ports: #default port was 80:80 and 443:443
+
+ - 80:80
+
+ - 443:443
+
+ restart: unless-stopped
+
+ libreoffice: #3365
+
+ image: lscr.io/linuxserver/libreoffice
+
+ container_name: libreoffice
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/libreoffice/config:/config
+
+ ports: #default port was 3000:3000
+
+ - 3365:3000
+
+ restart: unless-stopped
+
+paperless-ng: #7000
+
+ image: lscr.io/linuxserver/paperless-ng
+
+ container_name: paperless-ng
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ - REDIS_URL= #optional
+
+ volumes:
+
+ - /homelab/docker/paperless/config:/config
+
+ - /homelab/docker/paperless/data:/data
+
+ ports: #default port is 8000:8000
+
+ - 7000:8000
+
+ restart: unless-stopped
+
+homeassistant: # 8123
+
+ image: lscr.io/linuxserver/homeassistant
+
+ container_name: homeassistant
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/homeassistant/data:/config
+
+ ports: #default port is 8123:8123
+
+ - 8123:8123 #optional
+
+ restart: unless-stopped
+
+webtop: #3131
+
+ image: lscr.io/linuxserver/webtop:ubuntu-mate
+
+ container_name: webtop
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/webtop/config:/config
+
+ ports:
+
+ - 3131:3000
+
+ restart: unless-stopped
+
+plex: #32400:32400
+
+ image: lscr.io/linuxserver/plex
+
+ container_name: plex
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - VERSION=docker
+
+ volumes:
+
+ - /homelab/docker/plex/library:/config
+
+ - /homelab/docker/plex/tvseries:/tv
+
+ - /homelab/docker/plex/movies:/movies
+
+ ports:
+
+ - 32400:32400
+
+ restart: unless-stopped
+
+ medusa: #8282
+
+ image: lscr.io/linuxserver/medusa
+
+ container_name: medusa
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/medusa/config:/config
+
+ - /homelab/docker/medusa/downloads:/downloads
+
+ - /homelab/docker/medusa/tv:/tv
+
+ ports: #default port is 8081:8081
+
+ - 8282:8081
+
+ restart: unless-stopped
+
+ sickchill: #8181
+
+ image: lscr.io/linuxserver/sickchill
+
+ container_name: sickchill
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/sickchill/config:/config
+
+ - /homelab/docker/sickchill/downloads:/downloads
+
+ - /homelab/docker/sickchill/tv:/tv
+
+ ports:
+
+ - 8081:8081
+
+ restart: unless-stopped
+
+ sonarr: #8989
+
+ image: lscr.io/linuxserver/sonarr
+
+ container_name: sonarr
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/sonarr/config:/config
+
+ - /homelab/docker/sonarr/tvseries:/tv #optional
+
+ - /homelab/docker/sonarr/downloads:/downloads #optional
+
+ ports:
+
+ - 8989:8989
+
+ restart: unless-stopped
+
+ couchpotato: #5050
+
+ image: lscr.io/linuxserver/couchpotato
+
+ container_name: couchpotato
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/couchpotato/config:/config
+
+ - /homelab/docker/couchpotato/downloads:/downloads
+
+ - /homelab/docker/couchpotato/movies:/movies
+
+ ports:
+
+ - 5050:5050
+
+ restart: unless-stopped
+
+ radarr: #7878
+
+ image: lscr.io/linuxserver/radarr
+
+ container_name: radarr
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/radarr/data:/config
+
+ - /homelab/docker/radarr/movies:/movies #optional
+
+ - /homelab/docker/radarr/downloads:/downloads #optional
+
+ ports:
+
+ - 7878:7878
+
+ restart: unless-stopped
+
+ 
+
+ headphones: #4323
+
+ image: lscr.io/linuxserver/headphones
+
+ container_name: headphones
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/headphones/config:/config
+
+ - /homelab/docker/headphones/downloads:/downloads
+
+ - /homelab/docker/headphones/music:/music
+
+ ports: #default port was 8181:8181
+
+ - 4323:8181
+
+ restart: unless-stopped
+
+ lidarr: #8686
+
+ image: lscr.io/linuxserver/lidarr
+
+ container_name: lidarr
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/lidarr/config:/config
+
+ - /homelab/docker/lidarr/music:/music #optional
+
+ - /homelab/docker/lidarr/downloads:/downloads #optional
+
+ ports: #default port is 8686
+
+ - 8686:8686
+
+ restart: unless-stopped
+
+ overseerr: #5055
+
+ image: lscr.io/linuxserver/overseerr
+
+ container_name: overseerr
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/overseerr/config:/config
+
+ ports:
+
+ - 5055:5055
+
+ restart: unless-stopped
+
+ snapdrop: #90 & 643
+
+ image: lscr.io/linuxserver/snapdrop
+
+ container_name: snapdrop
+
+ environment:
+
+ - PUID=1000
+
+ - PGID=1000
+
+ - TZ=America/Los_Angeles
+
+ volumes:
+
+ - /homelab/docker/snapdrop:/config
+
+ ports:
+
+ - 90:80
+
+ - 643:443
+
+ restart: unless-stopped
